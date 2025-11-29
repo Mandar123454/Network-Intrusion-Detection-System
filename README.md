@@ -65,7 +65,7 @@ If you have Snort installed on your system:
 4.  **Response Mechanism**: Automatically simulates blocking the source IP of detected threats (e.g., firewall block simulation).
 5.  **Visualization**: Bar charts and pie charts showing the distribution of detected threats.
 
-## Task Completion Status (Task 4)
+## Project Status 
 
 | Requirement | Status | Implementation Details |
 | :--- | :--- | :--- |
