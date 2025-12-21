@@ -2,7 +2,8 @@ import logging
 import time
 import json
 import os
-from scapy.all import sniff, IP, TCP, UDP, ICMP
+import argparse
+from scapy.all import sniff, IP, TCP, UDP, ICMP, show_interfaces
 
 # Configuration
 LOG_FILE = "logs/alerts.json"
@@ -95,11 +96,21 @@ def packet_callback(packet):
 def start_sniffing(interface=None):
     print(f"Monitoring network traffic... (Press Ctrl+C to stop)")
     if interface:
+        print(f"Using interface: {interface}")
         sniff(iface=interface, prn=packet_callback, store=0)
     else:
+        print("Using default interface. If you see no alerts, pass --iface.")
         sniff(prn=packet_callback, store=0)
 
 if __name__ == "__main__":
-    # You might need to specify the interface on Windows, e.g., "Ethernet" or "Wi-Fi"
-    # Use scapy's show_interfaces() to find the name if needed.
-    start_sniffing()
+    parser = argparse.ArgumentParser(description="Simple Python NIDS")
+    parser.add_argument("--iface", "-i", help="Interface name to sniff on (e.g., 'Ethernet', 'Wi-Fi')")
+    parser.add_argument("--list", action="store_true", help="List available interfaces and exit")
+    args = parser.parse_args()
+
+    if args.list:
+        print("Available interfaces:")
+        show_interfaces()
+        raise SystemExit(0)
+
+    start_sniffing(args.iface)
